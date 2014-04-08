@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	$('input#accName').val('kdmaam'); $('input#accId').val('1546');
+	$('input#battletagName').val('kdmaam'); $('input#battletagCode').val('1546');
 	
 	$('button#go').click(function(){		
 		resetDisplay();
@@ -12,22 +12,26 @@ $(document).ready(function(){
 
 function resetDisplay(){
 	$('section#display').empty();
+	$('input').removeClass('invalidInput');
 }
 
 function validateInput(){
 	var foundError = false;
 	var msg = '';
 	
-	var accName = $('input#accName').val();
-	var accId = $('input#accId').val();
+	var battletagName = $('input#battletagName').val();
+	var battletagCode = $('input#battletagCode').val();
 	
-	if(!accName || accName===''){
-		msg = msg + "- Please provide a profile name.<br>"
+	if(!battletagName || battletagName===''){
+		msg = msg + "- Please provide a battletag Name.<br>";
+		$('input#battletagName').addClass('invalidInput');
 	}
-	if(!accId || accId===''){
-		msg = msg + "- Please provide a profile id.<br>"
-	}else if(isNaN(parseInt(accId))){
-		msg = msg + "- The profile id must be a number.<br>"
+	if(!battletagCode || battletagCode===''){
+		msg = msg + "- Please provide a battletag Code.<br>";
+		$('input#battletagName').addClass('invalidInput');
+	}else if(isNaN(parseInt(battletagCode))){
+		msg = msg + "- The battletag Code must be a number.<br>";
+		$('input#battletagName').addClass('invalidInput');
 	}
 	
 	if(msg!==''){
@@ -39,8 +43,17 @@ function validateInput(){
 }
 
 function loadProfile(){
-	var accName = $('input#accName').val();
-	var accId = $('input#accId').val();
+	var battletagName = $('input#battletagName').val();
+	var battletagCode = $('input#battletagCode').val();
 	
+	var URL_BASE = "http://us.battle.net/api/d3/profile/";
 	
+	var url = URL_BASE + battletagName + '-' + battletagCode + '?jsoncallback=?';
+	
+  	$.getJSON( url, {
+    	format: "json"
+  	})
+    .done(function( data ) {
+      console.log(data);
+    });
 }
